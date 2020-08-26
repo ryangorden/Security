@@ -6,16 +6,21 @@
 import subprocess
 import sys
 
-interface= sys.argv[1]
-mac_address= sys.argv[2]
+def get_arguments():
+    arguments= {
+                'interface': sys.argv[1],
+                'mac_address': sys.argv[2]
+               }
+    return arguments
 
-def change_mac(interface, mac_address):
-    print('Changing the MAC Address for', interface, 'to', mac_address)
-    subprocess.call(['ip', 'link', 'set', interface,'down']) #ifcong eth0 down can be used as well
-    subprocess.call(['ifconfig', interface, 'hw', 'ether', mac_address])
-    subprocess.call(['ip', 'link', 'set', interface,'up'])
-    return 'Mac Address has been changed to ' + mac_address
+def change_mac(arguments):
+    print('Changing the MAC Address for', arguments['interface'], 'to', arguments['mac_address'])
+    subprocess.call(['ip', 'link', 'set', arguments['interface'],'down']) #ifcong eth0 down can be used as well
+    subprocess.call(['ifconfig',arguments['interface'], 'hw', 'ether', arguments['mac_address']])
+    subprocess.call(['ip', 'link', 'set', arguments['interface'],'up'])
+    return 'Mac Address has been changed to ' + arguments['mac_address']
 
 if __name__ == '__main__':
-    notification= change_mac(interface, mac_address)
+    inputs= get_arguments()
+    notification= change_mac(inputs)
     print(notification)
