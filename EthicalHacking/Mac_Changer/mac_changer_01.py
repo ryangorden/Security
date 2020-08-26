@@ -4,10 +4,13 @@
    an illegal act. Please act responsibly.""" 
 
 import subprocess
+import sys
+
+
 
 try:
-    interface= input('Enter name of Interface: ')
-    mac_address= input('What do you want your mac address to be: ')
+    interface= sys.argv[1]
+    mac_address= sys.argv[2]
 except:
     interface= raw_input('Enter name of Interface: ')
     mac_address= raw_input('What do you want your mac address to be: ')
