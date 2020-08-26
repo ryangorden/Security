@@ -5,8 +5,13 @@
 
 import subprocess
 
-interface= 'eth0'
-mac_address= '00:11:22:33:44:55'
+try:
+    interface= input('Enter name of Interface: ')
+    mac_address= input('What do you want your mac address to be: ')
+except:
+    interface= raw_input('Enter name of Interface: ')
+    mac_address= raw_input('What do you want your mac address to be: ')
+
 
 print('Changing the MAC Address for', interface, 'to', mac_address)
 subprocess.call('ip link set ' +interface + ' down', shell= True) #ifcong eth0 down can be used as well
