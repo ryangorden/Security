@@ -6,21 +6,10 @@
 import subprocess
 import sys
 
-
-
-try:
-    interface= sys.argv[1]
-    mac_address= sys.argv[2]
-except:
-    interface= raw_input('Enter name of Interface: ')
-    mac_address= raw_input('What do you want your mac address to be: ')
-
+interface= sys.argv[1]
+mac_address= sys.argv[2]
 
 print('Changing the MAC Address for', interface, 'to', mac_address)
-#subprocess.call('ip link set ' +interface + ' down', shell= True) #ifcong eth0 down can be used as well
-#subprocess.call('ifconfig '+ interface + ' hw ether '+ mac_address, shell= True)
-#subprocess.call('ip link set '+ interface +' up', shell= True)
-
 subprocess.call(['ip', 'link', 'set', interface,'down']) #ifcong eth0 down can be used as well
 subprocess.call(['ifconfig', interface, 'hw', 'ether', mac_address])
 subprocess.call(['ip', 'link', 'set', interface,'up'])
