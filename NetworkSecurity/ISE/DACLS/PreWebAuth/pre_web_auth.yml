@@ -1,0 +1,10 @@
+---
+name: "PreWebAuth"
+description: "Guest Web Portal DACL"
+dacl:
+  - "remark Permit ISE Servers"
+  - "permit ip any host 10.10.10.10"
+  - "remark Permit dhcp requests"
+  - "permit udp any host 10.10.10.11"
+daclType: "IPV4"
+...
