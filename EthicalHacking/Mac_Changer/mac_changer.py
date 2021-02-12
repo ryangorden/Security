@@ -40,11 +40,19 @@ def change_mac_unsecure(interface,mac_address):
     subprocess.call("ifconfig " + interface + " up", shell=True)
     return subprocess.call("ifconfig", shell=True)
 
-# subprocess.call(["ifconfig"])
-# subprocess.call(["ifconfig",interface,"down"])
-# subprocess.call("ifconfig",interface,"hw ether",mac_address])
-# subprocess.call(["ifconfig",nterface,"up"])
-# subprocess.call(["ifconfig"])
+def mac_changer(interface, mac_address):
+    """
+    This function will change the mac address of your interface
+    for a linux device.
+    :param interface:
+    :param mac_address:
+    :return:
+    """
+    subprocess.call(["ifconfig"])
+    subprocess.call(["ifconfig",interface,"down"])
+    subprocess.call("ifconfig",interface,"hw ether",mac_address])
+    subprocess.call(["ifconfig",nterface,"up"])
+    return subprocess.call(["ifconfig"])
 
 if __name__ == "__main__":
     interface=get_arguments().interface
