@@ -1,5 +1,6 @@
 import subprocess
 import optparse
+import re
 
 def get_arguments():
     """
@@ -49,23 +50,31 @@ def mac_changer(interface, mac_address):
     """
     subprocess.call(["ifconfig"])
     subprocess.call(["ifconfig",interface,"down"])
-    subprocess.call("ifconfig",interface,"hw ether",mac_address])
+    subprocess.call(["ifconfig",interface,"hw","ether",mac_address])
     subprocess.call(["ifconfig",interface,"up"])
 
-def validate_mac_change(interface):
+def get_current_mac(interface, mac_address):
     """
     This function will check to see did the mac address change
     for the interface
     :return:
     """
-    return subprocess.call(["ifconfig", interface])
+    ifconfig= subprocess.check_output(["ifconfig", interface])
+    mac_address_result= re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w", ifconfig.decode("utf-8"))
+
+    if mac_address_result:
+        if (mac_address_result.group(0)) == mac_address:
+            return ("Mac was change successfully: "+ mac_address_result.group(0))
+        else:
+            return ("Mac did not change: " + mac_address_result.group(0))
+    else:
+        return "No mac found"
+
+
 
 if __name__ == "__main__":
     interface=get_arguments().interface
     mac_address= get_arguments().new_mac
-    print(mac_address)
-    print(interface)
-    # mac=change_mac_unsecure(interface,mac_address)
-    # ifconfig= validate_mac_change(interface)
-    # print(ifconfig)
-
+    mac=mac_changer(interface,mac_address)
+    macAdress= get_current_mac(interface, mac_address)
+    print(macAdress)
