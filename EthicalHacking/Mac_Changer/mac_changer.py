@@ -66,6 +66,6 @@ if __name__ == "__main__":
     print(mac_address)
     print(interface)
     # mac=change_mac_unsecure(interface,mac_address)
-    ifconfig= validate_mac_change(interface)
-    print(ifconfig)
+    # ifconfig= validate_mac_change(interface)
+    # print(ifconfig)
 
