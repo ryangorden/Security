@@ -1,3 +1,8 @@
+"""These script was to create to test against my CCNP Security lab.
+   They are not intended for malicious use. If used to attack any system
+   without authorization from that company/user means you are performing
+   an illegal act. Please act responsibly."""
+
 import subprocess
 import optparse
 import re
