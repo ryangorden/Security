@@ -1,6 +1,5 @@
 import subprocess
 import optparse
-import sys
 
 def get_arguments():
     """
@@ -51,8 +50,15 @@ def mac_changer(interface, mac_address):
     subprocess.call(["ifconfig"])
     subprocess.call(["ifconfig",interface,"down"])
     subprocess.call("ifconfig",interface,"hw ether",mac_address])
-    subprocess.call(["ifconfig",nterface,"up"])
-    return subprocess.call(["ifconfig"])
+    subprocess.call(["ifconfig",interface,"up"])
+
+def validate_mac_change(interface):
+    """
+    This function will check to see did the mac address change
+    for the interface
+    :return:
+    """
+    return subprocess.call(["ifconfig", interface])
 
 if __name__ == "__main__":
     interface=get_arguments().interface
@@ -60,5 +66,6 @@ if __name__ == "__main__":
     print(mac_address)
     print(interface)
     # mac=change_mac_unsecure(interface,mac_address)
-    # print(mac)
+    ifconfig= validate_mac_change(interface)
+    print(ifconfig)
 
