@@ -64,5 +64,5 @@ if __name__ == "__main__":
             time.sleep(2)
     except (KeyboardInterrupt):
         print("\nUser Manually Stopped Program with CTRL+c. Restoring arp tables of targeted devices")
-        spoof(target_ip, gateway_ip)
-        spoof(gateway_ip, target_ip)
+        restore(target_ip, gateway_ip)
+        restore(gateway_ip, target_ip)
