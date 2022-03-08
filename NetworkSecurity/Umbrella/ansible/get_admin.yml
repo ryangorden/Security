@@ -1,0 +1,25 @@
+---
+# this api supports limit and param
+- name: get users
+  hosts: localhost
+  connection: local
+  vars: 
+    orgid: "{{ organizationId }}"
+    base_url: "https://management.api.umbrella.com/v1"
+  tasks:
+    - name: get users from Umbrella
+      uri: 
+        url: "{{ base_url }}/organizations/{{ orgid }}/users?limit=2"
+        method: GET
+        url_username: "{{ key }}"
+        url_password: "{{ secret }}"
+        headers:
+          Content-Type: "application/json"
+        force_basic_auth: yes
+      register: users
+
+    - name: print results to console
+      debug:
+        msg: "{{ users }}"
+
+    

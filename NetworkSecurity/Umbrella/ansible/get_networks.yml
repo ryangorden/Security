@@ -1,0 +1,25 @@
+---
+# this api supports limit and page query param
+- name: get networks
+  hosts: localhost
+  connection: local
+  vars: 
+    orgid: "{{ organizationId }}"
+    base_url: "https://management.api.umbrella.com/v1"
+  tasks:
+    - name: get networks from Umbrella
+      uri: 
+        url: "{{ base_url }}/organizations/{{ orgid }}/networks?limit=1"
+        method: GET
+        url_username: "{{ key }}"
+        url_password: "{{ secret }}"
+        headers:
+          Content-Type: "application/json"
+        force_basic_auth: yes
+      register: users
+
+    - name: print results to console
+      debug:
+        msg: "{{ users }}"
+
+    
