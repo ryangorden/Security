@@ -1,0 +1,44 @@
+---
+- name: Update destinatin list
+  hosts: localhost
+  connection: local
+  vars: 
+    orgid: "{{ organizationId }}"
+    base_url: "https://management.api.umbrella.com/v1"
+  tasks:
+    - name: get destination list in Umbrella
+      uri: 
+        url: "{{ base_url }}/organizations/{{ orgid }}/destinationlists?limit=1"
+        method: GET
+        status_code: 200
+        url_username: "{{ key }}"
+        url_password: "{{ secret }}"
+        headers:
+          Content-Type: "application/json"
+          Accept: application/json
+      register: destination
+
+    - name: getting destination list id
+      set_fact:
+        listId: "{{ destination.json.data[0].id }}"
+
+    - name: create destination list rule
+      uri: 
+        url: "{{ base_url }}/organizations/{{ orgid }}/destinationlists/{{ listId }}/destinations"
+        method: POST
+        status_code: 200
+        url_username: "{{ key }}"
+        url_password: "{{ secret }}"
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        # body: [{"destination": "youtube.com", "comment": "test"}, {"destination": "msn.com", "comment": "test2"}]
+        body:
+          - destination: "espn.com"
+          - destination: "lctcs.edu"
+      register: destination_list
+
+    - name: print results to console
+      debug:
+        msg: "{{ destination_list }}"
+

@@ -1,0 +1,39 @@
+---
+# this api supports limit and param
+- name: create destion list
+  hosts: localhost
+  connection: local
+  vars: 
+    orgid: "{{ organizationId }}"
+    base_url: "https://management.api.umbrella.com/v1"
+  tasks:
+    - name: create destination list in Umbrella
+      uri: 
+        url: "{{ base_url }}/organizations/{{ orgid }}/destinationlists"
+        method: POST
+        status_code: 200
+        url_username: "{{ key }}"
+        url_password: "{{ secret }}"
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          access: allow
+          isGlobal: false
+          name: des_test
+          destinations:
+            - destination: "yahoo.com"
+              type: "DOMAIN"
+              comment: "test domain, yahoo.com"
+            - destination: "8.8.8.8"
+              type: "IPV4"
+            # - destionation: "brcats.com"
+            #   type: "URL"
+        force_basic_auth: yes
+      register: destination
+
+    - name: print results to console
+      debug:
+        msg: "{{ destination }}"
+
+
