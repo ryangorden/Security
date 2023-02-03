@@ -14,7 +14,7 @@
     - name: Configure pool
       bigip_pool:
         name: "pool_{{ virtual_server.pool_name }}"
-        provider: "{{ PROVIDER }}"
+        provider: "{{ conn_params }}"
         state: present
         lb_method: "{{ virtual_server.pool_lb_method }}"
 
@@ -22,7 +22,7 @@
     - name: Add member nodes to pool
       loop: "{{ virtual_server.pool_members }}"
       bigip_pool_member:
-        provider: "{{ PROVIDER }}"
+        provider: "{{ conn_params }}"
         host: "{{ item.ip_addr }}"
         name: "{{ item.name }}"
         pool: "pool_{{ virtual_server.pool_name }}"
