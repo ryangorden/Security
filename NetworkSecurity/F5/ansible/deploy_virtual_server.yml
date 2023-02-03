@@ -17,7 +17,7 @@
         provider: "{{ PROVIDER }}"
         state: present
         lb_method: "{{ virtual_server.pool_lb_method }}"
-      delegate_to: localhost
+
 
     - name: Add member nodes to pool
       loop: "{{ virtual_server.pool_members }}"
@@ -27,7 +27,7 @@
         name: "{{ item.name }}"
         pool: "{{ virtual_server.pool_name }}"
         port: "{{ item.port }}"
-      delegate_to: localhost
+
 
     - name: Configure virtual server
       bigip_virtual_server:
@@ -41,7 +41,7 @@
         # default_persistence_profile: "{{ DEFAULT_PERSISTENCE if PERSISTENCE == 'yes' else None | default(omit) }}" #Exclude option if PERSISTENCE=no
         # snat: "{{ 'automap' if SNAT_REQUIRED == true else 'none' }}"
         provider: "{{ conn_params }}"
-      delegate_to: localhost
+
 
 
 
