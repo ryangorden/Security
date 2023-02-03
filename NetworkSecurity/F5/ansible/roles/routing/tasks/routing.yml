@@ -1,0 +1,12 @@
+---
+- name: configure static routes
+  loop: "{{ routes.static }}"
+  bigip_static_route:
+    destination: "{{ item.dest.split('/')[0] }}"
+    netmask: "{{ item.dest | ipv4('prefix') }}"
+    gateway_address: "{{ item.gw }}"
+    name: "{{ item.name }}"
+    provider: "{{ conn_params }}"
+    state: present
+  tags:
+    - routing

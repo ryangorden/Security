@@ -1,0 +1,9 @@
+- name: create  vlans on f5
+  loop: "{{ vlans }}"
+  bigip_vlan:
+    tagged_interfaces: "{{ item.trunk_interfaces }}"
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    tag: "{{ item.id }}"
+    provider: "{{ conn_params }}"
+    state: presentS

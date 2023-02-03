@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    ltm:
+      hosts:
+        lb02.marriott.com:
+          ansisble_host: 10.82.10.32
+        lb01.marriott.com:
+          ansisble_host: 10.82.10.31

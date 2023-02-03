@@ -1,0 +1,12 @@
+---
+# Trunk port configuration on a f5 is equal to port channel config on cisco switches (LACP)
+- name: create a port channel on F5
+  loop: "{{ trunks }}"
+  bigip_trunk:
+    name: "{{ item.name }}"
+    interfaces: "{{ item.members }}"
+    link_selection_policy: "{{ item.link_selection_policy }}"
+    frame_distribution_hash: "{{ item.frame_distribution_hash }}"
+    lacp_enabled: false
+    provider: "{{ conn_params }}"
+    state: "{{ item.state }}"

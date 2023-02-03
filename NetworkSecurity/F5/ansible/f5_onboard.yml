@@ -1,0 +1,61 @@
+---
+- name: onboard a New LTM
+  hosts: lb01.marriott.com
+  connection: local
+  tasks:
+    - name: create a new user
+      bigip_user:
+        username_credential: "{{ item.name }}"
+        password_credential: "{{ item.passwd }}"
+        partition_access: "{{ item.role }}"
+        state: "{{ item.state | default(present) }}"
+        provider: "{{ conn_params }}"
+      loop: "{{ users }}"
+
+    - name: update admin password
+      bigip_user:
+      username_credential: admin
+      password_credential: "{{ admin_passwd }}"
+      state: present
+      provider: "{{ conn_params }}"
+
+    - name: configure dns
+      include_role:
+        name: system_setting
+        tasks_from: dns.yml
+
+    - name: configure ntp
+      include_role:
+        name: system_setting
+        tasks_from: ntp.yml
+
+    - name: configure hostname
+      include_role:
+        name: system_setting
+        tasks_from: hostname.yml
+
+    - name: configure hostname
+      include_role:
+        name: interfaces
+        tasks_from: trunks.yml
+      tags:
+        - intfs
+
+    - name: configure hostname
+      include_role:
+        name: interfaces
+        tasks_from: vlans.yml
+      tags:
+        - intfs
+
+    - name: configure hostname
+      include_role:
+        name: interfaces
+        tasks_from: self_ip.yml
+      tags:
+        - intfs
+
+    - name: configure routing
+      include_role:
+        name: routing
+        tasks_from: routing.yml

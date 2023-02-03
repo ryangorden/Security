@@ -1,0 +1,4 @@
+f5-sdk-python
+f5-icontrol-rest
+netaddr
+ansible

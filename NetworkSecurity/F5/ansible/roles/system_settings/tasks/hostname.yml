@@ -1,0 +1,5 @@
+---
+- name: setup hostname
+  bigip_hostname:
+    hostname: "{{ inventory_hostname }}"
+    provider: "{{ conn_params }}"

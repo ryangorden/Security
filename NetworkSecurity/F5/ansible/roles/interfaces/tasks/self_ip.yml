@@ -1,0 +1,9 @@
+- name: provision f5 svi interfaces # f5 calls them self ips
+  loop: "{{ l3_interfaces }}"
+  bigip_selfip:
+    address: "{{ item.ip_addr | ipv4('address') }}"
+    name: "{{ item.name }}"
+    netmask: "{{ item.ip_addr | ipv4('netmask') }}"
+    vlan: "{{ item.vlan }}"
+    provider: "{{ conn.params }}"
+    state: present

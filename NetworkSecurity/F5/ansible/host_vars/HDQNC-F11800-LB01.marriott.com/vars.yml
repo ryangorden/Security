@@ -1,0 +1,55 @@
+---
+phy_interfaces:
+  - 1.1
+  - 1.2
+trunks:
+  - name: po1
+    members: "{{ phy_interfaces }}"
+    link_selection_policy: maximum-bandwith
+    frame_distribution_hash: destination-mac
+    state: present
+vlans:
+  - name: vlan_10
+    id: 10
+    description: internal vlan
+    trunk_interfaces:
+      - po1
+    access_interfaces: []
+  - name: vlan_100
+    id: 100
+    description: external vlan
+    trunk_interfaces:
+      - po1
+    access_interfaces: []
+l3_interfaces:
+  - name: inside
+    ip_addr: 10.1.10.254/24
+    vlan: 10
+  - name: outside
+    ip_addr: 10.1.100.254/24
+    vlan: 100
+routes:
+  static:
+    - dest: 0.0.0.0/0
+      gw: 10.1.100.1
+      name: default_route
+virtual_server:
+  ip_addr: 10.1.100.100
+  vs_name: dev_web_app_vs
+  port: 443
+  endpoint:
+  pool_name: dev_web_app
+  pool_lb_method: round-robin
+  pool_members:
+    - name: syso-01.example.com
+      ip_addr: 10.1.10.10
+      port: 443
+    - name: syso-02.example.com
+      ip_addr: 10.1.10.11
+      port: 443 
+  profiles:
+    - http
+    - name: clientssl
+      context: client-side
+    - name: serverssl
+      context: sever-side

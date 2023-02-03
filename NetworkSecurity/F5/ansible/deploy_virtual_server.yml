@@ -1,0 +1,48 @@
+---
+- name: onboard a New LTM
+  hosts: lb01.example.com
+  connection: local
+  tasks:
+    - name: configure nodes
+      loop: "{{ virtual_server.pool_members }}"
+      bigip_node:
+        name: "{{ item.name }}"
+        address: "{{ item.ip_addr }}"
+        state: present
+        provider: "{{ conn_params }}"
+
+    - name: Configure pool
+      bigip_pool:
+        name: "pool_{{ virtual_server.pool_name }}"
+        provider: "{{ PROVIDER }}"
+        state: present
+        lb_method: "{{ virtual_server.pool_lb_method }}"
+      delegate_to: localhost
+
+    - name: Add member nodes to pool
+      loop: "{{ virtual_server.pool_members }}"
+      bigip_pool_member:
+        provider: "{{ PROVIDER }}"
+        host: "{{ item.ip_addr }}"
+        name: "{{ item.name }}"
+        pool: "{{ virtual_server.pool_name }}"
+        port: "{{ item.port }}"
+      delegate_to: localhost
+
+    - name: Configure virtual server
+      bigip_virtual_server:
+        name: "{{ virtual_server.vs_name }}"
+        destination: "{{ virtual_server.ip_addr }}"
+        port: "{{ virtual_server.port }}"
+        pool: "{{ virtual_server.pool_name }}"
+        description: Web App
+        profiles: "{{ virtual_server.profiles }}"
+        state: present
+        # default_persistence_profile: "{{ DEFAULT_PERSISTENCE if PERSISTENCE == 'yes' else None | default(omit) }}" #Exclude option if PERSISTENCE=no
+        # snat: "{{ 'automap' if SNAT_REQUIRED == true else 'none' }}"
+        provider: "{{ conn_params }}"
+      delegate_to: localhost
+
+
+
+

@@ -1,0 +1,26 @@
+---
+conn_params:
+  user: admin
+  password: password
+  server: "{{ ansible_host }}"
+  server_port: 443
+  validate_certs: false
+users:
+  - name: ansible
+    passwd: ansible123
+    role: ["all:admin"]
+    state: present
+domain: example.com
+dns:
+  state: present
+  ip_version: 4
+  search_domain: 
+    - example.com
+  name_servers:
+    - 8.8.8.8
+    - 8.8.8.4
+ntp:
+  ntp_servers:
+    - 1.1.1.1
+    - 2.2.2.2
+  timezone: UTC

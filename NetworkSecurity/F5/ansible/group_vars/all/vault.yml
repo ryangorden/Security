@@ -1,0 +1,13 @@
+---
+conn_params:
+  user: admin
+  password: password
+  server: "{{ ansible_host }}"
+  server_port: 443
+  validate_certs: false
+users:
+  - name: ansible
+    passwd: ansible123
+    role: ["all:admin"]
+    state: present
+admin_password: password

@@ -1,0 +1,8 @@
+---
+- name: setup dns settings
+  bigip_device_dns:
+    state: "{{ dns.state }}"
+    ip_version: "{{ dns.ip_version }}"
+    name_servers: "{{ dns.name_servers }}"
+    search: "{{ dns.search_domain }}"
+

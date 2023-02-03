@@ -1,0 +1,6 @@
+---
+- name: setup ntp settings
+  bigip_device_ntp:
+    ntp_servers: "{{ ntp.ntp_servers }}"
+    timezone: "{{ ntp.timezone }}"
+    provider: "{{ conn_params }}"
