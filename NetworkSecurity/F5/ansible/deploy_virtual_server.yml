@@ -25,7 +25,7 @@
         provider: "{{ PROVIDER }}"
         host: "{{ item.ip_addr }}"
         name: "{{ item.name }}"
-        pool: "{{ virtual_server.pool_name }}"
+        pool: "pool_{{ virtual_server.pool_name }}"
         port: "{{ item.port }}"
 
 
@@ -34,7 +34,7 @@
         name: "{{ virtual_server.vs_name }}"
         destination: "{{ virtual_server.ip_addr }}"
         port: "{{ virtual_server.port }}"
-        pool: "{{ virtual_server.pool_name }}"
+        pool: "pool_{{ virtual_server.pool_name }}"
         description: Web App
         profiles: "{{ virtual_server.profiles }}"
         state: present
