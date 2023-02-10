@@ -33,59 +33,5 @@
         pool: "pool_{{ item.pool_name }}"
         description: Web App
         profiles: "{{ item.profiles }}"
-        state: present---
-- name: onboard a New LTM
-  hosts: all
-  connection: local
-  vars:
-    nodes: []
-  tasks:
-    - name: parse vs
-      set_fact:
-        node_list: "{{ virtual_server | return_list }}"
-      
-    - name: configure nodes
-      loop: "{{ node_list }}"
-      bigip_node:
-        name: "{{ item.name }}"
-        address: "{{ item.ip_addr }}"
         state: present
-        provider: "{{ conn_params }}"
-
-    - name: Configure pool
-      loop: "{{ virtual_server }}" 
-      bigip_pool:
-        name: "pool_{{ item.pool_name }}"
-        provider: "{{ conn_params }}"
-        state: present
-        lb_method: "{{ item.pool_lb_method }}"
-
-
-    - name: Configure virtual server
-      loop: "{{ virtual_server }}"
-      bigip_virtual_server:
-        name: "{{ item.vs_name }}"
-        destination: "{{ item.ip_addr }}"
-        port: "{{ item.port }}"
-        pool: "pool_{{ item.pool_name }}"
-        description: Web App
-        profiles: "{{ item.profiles }}"
-        state: present
-        # default_persistence_profile: "{{ DEFAULT_PERSISTENCE if PERSISTENCE == 'yes' else None | default(omit) }}" #Exclude option if PERSISTENCE=no
-        # snat: "{{ 'automap' if SNAT_REQUIRED == true else 'none' }}"
-        provider: "{{ conn_params }}"
-
-    - name: Add member nodes to pool
-      loop: "{{ node_list }}"
-      bigip_pool_member:
-        provider: "{{ conn_params }}"
-        host: "{{ item.ip_addr }}"
-        name: "{{ item.name }}"
-        pool: "pool_{{ item.pool_name }}"
-        port: "{{ item.port }}"
-        provider: "{{ conn_params }}"
-
-
-
-
 
