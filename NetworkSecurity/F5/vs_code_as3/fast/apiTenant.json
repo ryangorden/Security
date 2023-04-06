@@ -1,0 +1,14 @@
+
+{"name": "examples/simple_http",
+ "parameters": {
+    "tenant_name": "apiTenant",
+    "application_name": "apiTenant",
+    "virtual_port": 80,
+    "virtual_address": "192.168.230.40",
+    "server_port": 8080,
+    "server_addresses": [
+        "192.168.100.11",
+        "192.168.100.12"
+    ]
+ }
+}
