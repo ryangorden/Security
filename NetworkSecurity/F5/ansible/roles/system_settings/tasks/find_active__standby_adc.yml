@@ -1,0 +1,29 @@
+---
+- name: Get HA status information
+  bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - "tmsh show sys failover"
+  register: ha_status
+
+- name: mark active device
+  set_fact:
+    active_ltm : "{{ ha_status }}"
+  when: "'active' in ha_status_stdout[0]"
+  
+- name: mark standby device
+  set_fact:
+    standby_ltm : "{{ ha_status }}"
+  when: "'standby' in ha_status_stdout[0]"
+  
+- name: get device groups name 
+  bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - "tmsh list cm device-group"
+  register: dg_name_non_filtered
+  
+- name: filter by device name
+  set_fact:
+    dg_name: "{{ dg_name_non_filtered }}"
+  when: ("'group-a' in dg_name_non_filtered.stdout[0]") or ("'group-b' in dg_name_non_filtered.stdout[0]")
